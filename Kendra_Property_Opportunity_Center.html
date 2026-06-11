@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kendra Gassaway Property Opportunity Center</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#F7F3EA;color:#2D2D2D}
+.hero{background:linear-gradient(rgba(31,58,122,.75),rgba(31,58,122,.75));padding:40px;color:white}
+.container{max-width:1200px;margin:auto;padding:20px}
+.profile{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.profile img{width:180px;border-radius:12px;border:4px solid #C9A227}
+.logo{max-width:220px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+.card{background:white;border-top:4px solid #C9A227;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.card h3{margin:0;color:#1F3A7A}
+button{background:#1F3A7A;color:white;border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
+button:hover{background:#C9A227}
+table{width:100%;border-collapse:collapse;background:white;margin-top:20px}
+th,td{padding:12px;border-bottom:1px solid #ddd}
+input,select{padding:10px;width:100%;margin:6px 0}
+.form{background:white;padding:20px;border-radius:16px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="hero">
+<div class="container">
+<img class="logo" src="IMG_5871.png" alt="Coldwell Banker Advantage">
+<div class="profile">
+<img src="IMG_5942.jpeg" alt="Kendra Gassaway">
+<div>
+<h1>Kendra Gassaway</h1>
+<h2>Property Opportunity Center</h2>
+<p>Coldwell Banker Advantage</p>
+<p>910.756.5110 | kgassaway@homescba.com</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="container">
+<div class="cards">
+<div class="card"><h3 id="leadCount">0</h3><p>Active Opportunities</p></div>
+<div class="card"><h3>$0</h3><p>Potential Volume</p></div>
+<div class="card"><h3>$0</h3><p>Estimated Equity</p></div>
+<div class="card"><h3>0</h3><p>Listings Secured</p></div>
+</div>
+
+<div class="form">
+<h3>Add Opportunity</h3>
+<input id="address" placeholder="Property Address">
+<input id="value" placeholder="Estimated Value">
+<select id="priority">
+<option>Priority A</option>
+<option>Priority B</option>
+<option>Priority C</option>
+<option>Long-Term</option>
+</select>
+<button onclick="addLead()">Add Opportunity</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+<th>Priority</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="leads"></tbody>
+</table>
+</div>
+
+<script>
+let leads = JSON.parse(localStorage.getItem('kendraLeads') || '[]');
+
+function render(){
+document.getElementById('leadCount').innerText = leads.length;
+const tbody = document.getElementById('leads');
+tbody.innerHTML='';
+leads.forEach((l,i)=>{
+tbody.innerHTML += `<tr>
+<td>${l.address}</td>
+<td>$${l.value}</td>
+<td>${l.priority}</td>
+<td><button onclick="removeLead(${i})">Delete</button></td>
+</tr>`;
+});
+localStorage.setItem('kendraLeads', JSON.stringify(leads));
+}
+
+function addLead(){
+const address=document.getElementById('address').value;
+const value=document.getElementById('value').value;
+const priority=document.getElementById('priority').value;
+if(!address) return alert('Enter address');
+leads.push({address,value,priority});
+render();
+}
+
+function removeLead(i){
+leads.splice(i,1);
+render();
+}
+
+render();
+</script>
+</body>
+</html>
